@@ -80,16 +80,16 @@ class Kiddo{
         else if (command == 'M'){
             switch (direction.getDirection()){
                 case 'N':
-                    x--;
+                    if (x>0) x--;
                     break;
                 case 'S':
-                    x++;
+                    if (x<mx-1) x++;
                     break;
                 case 'E':
-                    y++;
+                    if (y<my-1) y++;
                     break;
                 case 'W':
-                    y--;
+                    if (y>0) y--;
                     break;
             }
         }
