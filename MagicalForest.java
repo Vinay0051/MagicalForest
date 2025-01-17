@@ -1,9 +1,12 @@
+import java.util.Arrays;
+import java.util.List;
+
 public class MagicalForest {
 
     public static void main(String[] args) {
         int mx=15, my=15;
 
-        Kiddo kid = new Kiddo(4,6,mx,my,'N');
+        Kiddo kid = new Kiddo(4,6,mx,my,"N");
         kid.initializeForest();
         kid.displayForest();
         String commands = "LMMLMRRMML";
@@ -16,23 +19,29 @@ public class MagicalForest {
 
 
 class Direction{
-    private  char currentDirection;
+    private  String currentDirection;
+    private final List<String> directions = Arrays.asList("N", "NE", "E", "SE", "S", "SW", "W", "NW");
 
-    public Direction(char direction){
+    public Direction(String direction){
         this.currentDirection = direction;
     }
 
-    public char getDirection(){
+    public String getDirection(){
         return this.currentDirection;
     }
 
     public void turnLeft(){
-        currentDirection = "NWSE".charAt(("NWSE".indexOf(currentDirection) + 3) % 4);
+//        currentDirection = "NWSE".charAt(("NWSE".indexOf(currentDirection) + 3) % 4);
+        int index = directions.indexOf(currentDirection);
+        currentDirection = directions.get((index + directions.size() - 1) % directions.size());
     }
 
     public void turnRight(){
-        currentDirection = "NWSE".charAt(("NWSE".indexOf(currentDirection) + 1) % 4);
+//        currentDirection = "NWSE".charAt(("NWSE".indexOf(currentDirection) + 1) % 4);
+        int index = directions.indexOf(currentDirection);
+        currentDirection = directions.get((index + directions.size() -1) % directions.size());
     }
+
 
 }
 
@@ -41,7 +50,7 @@ class Kiddo{
     private Direction direction;
     private char[][] forest;
 
-    public Kiddo(int x, int y, int mx, int my, char direction){
+    public Kiddo(int x, int y, int mx, int my, String direction){
         this.x = x;
         this.y = y;
         this.direction = new Direction(direction);
@@ -79,22 +88,39 @@ class Kiddo{
         }
         else if (command == 'M'){
             switch (direction.getDirection()){
-                case 'N':
+                case "N":
                     if (x>0) x--;
                     break;
-                case 'S':
-                    if (x<mx-1) x++;
-                    break;
-                case 'E':
+                case "NE":
+                    if (x>0 && y<my-1){
+                        x--;  y++;
+                    }
+                case "E":
                     if (y<my-1) y++;
                     break;
-                case 'W':
+                case "SE":
+                    if (y<my-1 && x<mx-1){
+                        x++; y++;
+                    }
+                    break;
+                case "S":
+                    if (x<mx-1) x++;
+                    break;
+                case "SW":
+                    if (x<mx-1 && y>0){
+                        x++; y--;
+                    }
+                case "W":
                     if (y>0) y--;
                     break;
+                case "NW":
+                    if (x>0 && y>0){
+                        x--;  y--;
+                    }
             }
         }
         forest[x][y] = 'K';
 
-        System.out.println(String.format("Kiddo Position: x->%d, y->%d, direction->%s", x, y, direction.getDirection()));
+        System.out.printf("Kiddo Position: x->%d, y->%d, direction->%s%n", x, y, direction.getDirection());
     }
 }
